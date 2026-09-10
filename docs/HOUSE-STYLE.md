@@ -267,8 +267,10 @@ with undated links.
 
 ## Confidentiality
 
-This work is Microsoft-confidential, and Market Landscape is the section that
-wants to send it outside.
+The specs PMPal is built for are confidential before they ship, and Market
+Landscape — the one section that wants to search the web — is exactly where that
+leaks. The guardrails below are a feature of the tool, not a disclaimer on this
+repository, which is public and holds no unreleased product detail.
 
 Outbound research prompts are **constructed, never interpolated**. `research_competitor`
 assembles a query from a fixed vendor list and a generic capability vocabulary in

@@ -3,10 +3,10 @@
 A GitHub Copilot **canvas extension** for writing Azure AI Gateway product specs —
 the research and benchmarking as much as the writing.
 
-The problem it addresses is visible in our own specs: a recent one is a strong,
-shipped-quality document with a **completely empty `### Market Landscape` section**.
-The part of a spec that needs external research is the part that doesn't get written,
-because it's the part that isn't writing.
+The problem it addresses shows up in real specs: a strong, shipped-quality document
+with a **completely empty `### Market Landscape` section**. The part of a spec that
+needs external research is the part that doesn't get written, because it's the part
+that isn't writing.
 
 PMPal puts the spec outline, its readiness rubric, and (from Phase 2) the evidence
 behind every external claim into one side panel, and refuses to call a section done
@@ -65,7 +65,7 @@ remain unless you pass `force`.
 
 ## What the rubric checks
 
-Thirteen rules derived from our own spec, not from a generic PRD notion — a Goal that
+Thirteen rules derived from a real spec, not from a generic PRD notion — a Goal that
 quantifies today's cost, first-person needs that carry a reason, real API contracts
 rather than pseudocode, bolded write rules, phasing rows that state customer value.
 
@@ -79,14 +79,16 @@ the house style; fewer would mean it isn't checking anything. A blank template s
 
 ## Confidentiality
 
-This work is Microsoft-confidential, and Market Landscape is the section that wants to
-send it outside.
+The specs PMPal is built for are confidential before they ship, and Market Landscape —
+the one section that wants to search the web — is exactly where that leaks. Handling
+that is the point of the tool.
 
-**The golden fixture is redacted.** The rubric was calibrated against a real internal
-spec, but `tests/fixtures/house-style-sample.md` is a fictional stand-in — same
-structure, same sentence shapes, same voice, invented product. Keep it that way: this
-repo lives on a personal GitHub account, so no unreleased contract, milestone, or
-`api-version` belongs in it.
+**This repository is public and contains no unreleased product detail.** The rubric was
+calibrated against a real internal spec; the fixture checked in here,
+`tests/fixtures/house-style-sample.md`, is a fictional stand-in — same structure, same
+sentence shapes, same voice, invented product. Keep it that way: no real contract,
+milestone, or `api-version` belongs in this repo. Your own drafts live in
+`workspaces/`, which is git-ignored.
 
 Outbound research prompts are **constructed, never interpolated**. `research_competitor`
 assembles a query from a fixed vendor list and a generic capability vocabulary; no text
