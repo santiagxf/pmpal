@@ -6,7 +6,7 @@
   "description": "PMPal - a GitHub Copilot canvas extension for writing AI Gateway product specs.",
   "scripts": {
     "validate": "node scripts/validate.mjs",
-    "test": "PMPAL_WORKSPACES_DIR=$(mktemp -d) node --test 'tests/*.test.mjs'",
+    "test": "node scripts/run-tests.mjs",
     "preinstall-ext": "npm install --prefix .github/extensions/pmpal"
   }
 }
