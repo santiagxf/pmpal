@@ -21,7 +21,7 @@ import { EventEmitter } from "node:events";
 const HERE = dirname(fileURLToPath(import.meta.url));
 /** repo root = up from .github/extensions/pmpal/lib */
 export const REPO_ROOT = resolve(HERE, "..", "..", "..", "..");
-export const WORKSPACES_DIR = join(REPO_ROOT, "workspaces");
+export const WORKSPACES_DIR = process.env.PMPAL_WORKSPACES_DIR ?? join(REPO_ROOT, "workspaces");
 export const TEMPLATE_PATH = join(REPO_ROOT, "templates", "spec-template.md");
 
 const SIDECARS = {
