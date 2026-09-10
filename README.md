@@ -33,17 +33,54 @@ Phase 1 has not yet been run inside the Copilot desktop app — see
 ## Install
 
 The extension is discovered from `.github/extensions/`, so cloning this repo into a
-workspace you open with Copilot is the whole install. Then:
+workspace you open with Copilot is most of the install. **The dependency step is not
+optional** — `node_modules/` is git-ignored, so a fresh clone cannot load until you run:
 
 ```bash
 npm install --prefix .github/extensions/pmpal   # pulls @github/copilot-sdk
+npm run validate                                # confirm it will load
 ```
 
-In the Copilot app: **Customize → Canvas → PMPal Spec**.
+`npm run validate` must print `OK ... safe to install`. Then, in the Copilot app:
+**Customize → Canvas → PMPal Spec**.
 
 Don't use `copilot plugin install` yet — it stores files under `installed-plugins/`,
 which may not participate in `extension.mjs` discovery
 ([copilot-cli#3023](https://github.com/github/copilot-cli/issues/3023)).
+
+## Troubleshooting: it fails to load and there's nothing in the logs
+
+That is the expected symptom of *every* load-time crash, and it is worth understanding
+because it will happen again.
+
+The host forks `extension.mjs` as a child process and speaks JSON-RPC over its **stdout**.
+Anything that throws while the module is loading writes to **stderr** — which the host
+discards. So the extension simply never appears, with no error anywhere. A missing
+`node_modules/` produces exactly this: `ERR_MODULE_NOT_FOUND` on stderr, silence in the UI.
+
+GitHub documents no pre-install check, no log file, and no troubleshooting path for this.
+So run the preflight instead:
+
+```bash
+npm run validate
+```
+
+It does what the host does, where you can see it:
+
+| Check | Catches |
+|---|---|
+| `extension.mjs` present, `type: module`, `main` correct | the file the host looks for isn't there |
+| `@github/copilot-sdk/extension` resolves | **the missing-`node_modules` silent death** |
+| no `console.log` in any source file | stdout writes that corrupt the JSON-RPC stream |
+| loads `extension.mjs` against a stubbed SDK | any throw during module load |
+| `joinSession()` called once, with every canvas | a canvas created but never registered |
+| action names unique, no reserved `canvas.` prefix | actions the host silently rejects |
+| `inputSchema` is an object; every `required` key exists | schemas the agent can't call |
+| `open()` returns a URL that serves HTML | a dead panel |
+
+The stub (`scripts/sdk-stub.mjs`, swapped in by a module resolution hook) exists because
+the real `joinSession()` throws unless the process was forked by the Copilot CLI — so
+`node extension.mjs` can never get past it on its own.
 
 ## Use
 
@@ -114,6 +151,7 @@ can be evaded.
     server.mjs         loopback HTTP + SSE for the panel
     actions.mjs        the logic behind the canvas actions
     ui/spec.mjs        the panel document
+scripts/validate.mjs   preflight: load + registration + panel checks
 templates/spec-template.md
 docs/HOUSE-STYLE.md
 workspaces/<slug>/     spec.md, evidence.json, benchmark.json, state.json
@@ -130,7 +168,8 @@ canvas API is `@experimental` and will change; when it does, one file breaks.
 ## Develop
 
 ```bash
-npm test                       # 46 tests, no install needed
+npm test                       # 46 tests, no SDK install needed
+npm run validate               # preflight the extension against a stubbed SDK
 ```
 
 The rubric, parser, confidentiality layer, and HTTP surface are all testable without the
