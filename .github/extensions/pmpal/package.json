@@ -1,0 +1,18 @@
+{
+  "name": "pmpal",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "extension.mjs",
+  "description": "Design Azure AI Gateway product specs in the team's house style, with research, benchmarking, and a readiness rubric that blocks on unsourced claims.",
+  "keywords": [
+    "product-management",
+    "product-spec",
+    "prd",
+    "competitive-research",
+    "ai-gateway",
+    "azure-api-management"
+  ],
+  "dependencies": {
+    "@github/copilot-sdk": "latest"
+  }
+}

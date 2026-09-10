@@ -1,0 +1,10 @@
+{
+  "name": "pmpal-repo",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "PMPal - a GitHub Copilot canvas extension for writing AI Gateway product specs.",
+  "scripts": {
+    "test": "node --test 'tests/*.test.mjs'"
+  }
+}

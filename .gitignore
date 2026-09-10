@@ -1,0 +1,7 @@
+node_modules/
+
+# Spec workspaces are working state, not source. Commit a finished spec to the
+# specs repo with `export_spec` instead -- and note that evidence.json and
+# state.json can hold internal-only notes.
+workspaces/*
+!workspaces/.gitkeep
