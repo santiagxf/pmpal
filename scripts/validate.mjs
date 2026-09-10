@@ -35,6 +35,22 @@ const section = (t) => console.log(`\n\x1b[1m${t}\x1b[0m`);
 
 const check = (cond, ok, bad, detail) => (cond ? pass(ok) : fail(bad, detail));
 
+// --- 0. Node.js version -----------------------------------------------------
+
+section("Runtime");
+
+{
+  const [major, minor] = process.versions.node.split(".").map(Number);
+  const ok = (major === 20 && minor >= 19) || major >= 22;
+  check(
+    ok,
+    `Node.js ${process.versions.node} meets the SDK requirement (^20.19.0 || >=22.12.0)`,
+    `Node.js ${process.versions.node} is too old -- the SDK requires ^20.19.0 || >=22.12.0`,
+    "The Copilot host bundles its own Node.js; this check reflects the version you would use\n          for npm install and npm run validate. Upgrade if npm install fails.",
+  );
+  pass(`Platform: ${process.platform} ${process.arch}`);
+}
+
 // --- 1. Layout -------------------------------------------------------------
 
 section("Layout");
